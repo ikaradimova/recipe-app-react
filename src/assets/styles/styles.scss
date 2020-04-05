@@ -24,3 +24,32 @@
 
 @import "../../../node_modules/font-awesome/scss/font-awesome";
 //@import "../../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
+
+//.recipe-info-container{
+//  border: #ff8f2b 5px solid;
+//  border-radius: 2%;
+//}
+
+body{
+  font-family: 'Merienda', cursive;
+}
+
+.login-form, .register-form{
+  input{
+    width: 60%;
+    border: 0;
+    font-size: 1.3rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #d3d3d3;
+    outline: none;
+    resize: vertical;
+    background-color: transparent;
+    margin: 0 auto;
+  }
+
+  button{
+    width: 60%;
+    margin: 0 20%;
+    padding: 1.5% 0;
+  }
+}

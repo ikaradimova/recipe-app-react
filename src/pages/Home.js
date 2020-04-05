@@ -1,10 +1,13 @@
 import React, {Component} from "react";
+import RandomRecipes from "../components/RandomRecipes/RandomRecipes";
 
 class Home extends Component {
 
     render() {
         return <div className="container">
-            home
+            <RandomRecipes>
+
+            </RandomRecipes>
         </div>
     }
 }

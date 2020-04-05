@@ -3,8 +3,8 @@ import React from 'react';
 import './App.css';
 import Header from './components/header/Header';
 import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
 import Profile from './pages/Profile';
 import Favourite from './pages/Favourite';
 import RecipeInfo from "./pages/RecipeInfo";
@@ -13,6 +13,12 @@ import {
     BrowserRouter as Router,
     Switch
 } from "react-router-dom";
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import reducers from "./redux/reducers";
+import thunk from 'redux-thunk';
+
+const store = createStore(reducers, applyMiddleware(thunk));
 
 const Layout = props => (
     <>
@@ -63,7 +69,7 @@ const routes = [
         path: '/recipe/:id',
         exact: false,
         main: () => <Layout>
-            <RecipeInfo/>
+            <RecipeInfo />
         </Layout>
     }
 ];
@@ -81,13 +87,13 @@ const getRoutes = () => {
 };
 
 function App() {
-    return (
+    return <Provider store={store}>
         <Router>
             <Switch>
                 {getRoutes()}
             </Switch>
         </Router>
-    );
+    </Provider>
 }
 
 export default App;
