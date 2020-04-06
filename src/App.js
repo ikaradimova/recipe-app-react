@@ -18,7 +18,10 @@ import { createStore, applyMiddleware } from "redux";
 import reducers from "./redux/reducers";
 import thunk from 'redux-thunk';
 
-const store = createStore(reducers, applyMiddleware(thunk));
+import {getFirestore} from 'redux-firestore';
+import {getFirebase} from "react-redux-firebase";
+
+const store = createStore(reducers, applyMiddleware(thunk.withExtraArgument({getFirebase, getFirestore})));
 
 const Layout = props => (
     <>

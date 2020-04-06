@@ -53,3 +53,24 @@ body{
     padding: 1.5% 0;
   }
 }
+
+.filter-icon{
+  font-size: 2rem;
+  color: #6c757d !important;
+}
+
+#search{
+  width: 100%;
+  border: 0;
+  font-size: 1.3rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #d3d3d3;
+  outline: none;
+  resize: vertical;
+  background-color: transparent;
+  margin: 0 auto;
+}
+
+.recipe-list-group{
+  width: 100%;
+}

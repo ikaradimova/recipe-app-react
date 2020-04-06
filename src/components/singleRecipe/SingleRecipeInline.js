@@ -16,15 +16,15 @@ class SingleRecipeInline extends Component {
 
             <li className="list-group-item recipe-list" /*style="display: none;"*/>
                 <div className="row">
-                    <div className="col-3 col-sm-2 col-xs-3">
+                    <div className="col-sm-6 col-12">
                         <img src={recipe.image}
-                             className="thumbnail img-responsive"
+                             className="img-thumbnail"
                              /*style="max-width: 14rem; max-height: 10rem;"*/
                         />
                     </div>
-                    <div className="col-9 col-sm-7 col-xs-6" /*style="padding-left: 6rem;"*/>
+                    <div className="col-sm-6 col-12" /*style="padding-left: 6rem;"*/>
                         <h4 className="list-title">{recipe.title}</h4>
-                        <p className="list-text">{ReactHtmlParser(recipe.summary.substr(0, 400) + '...')}</p>
+                        <p className="list-text">{recipe.summary ? ReactHtmlParser(recipe.summary.substr(0, 400) + '...') : ''}</p>
                         <Link to={`/recipe/${recipe.id}`} className="btn btn-primary">See recipe</Link>
                     </div>
                 </div>

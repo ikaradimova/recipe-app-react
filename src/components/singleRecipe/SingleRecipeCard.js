@@ -18,7 +18,7 @@ class SingleRecipeCard extends Component {
                  alt="Card image cap"/>
                 <div className="card-body">
                     <h5 className="card-title">{recipe.title}</h5>
-                    <p className="card-text">{ReactHtmlParser(recipe.summary.substr(0, 400) + '...')}</p>
+                    <p className="card-text">{recipe.summary ? ReactHtmlParser(recipe.summary.substr(0, 400) + '...') : ''}</p>
                     <Link to={`/recipe/${recipe.id}`} className="btn btn-primary">See recipe</Link>
                 </div>
         </div>

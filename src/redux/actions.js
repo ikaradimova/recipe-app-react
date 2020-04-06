@@ -39,3 +39,40 @@ export const getRecipeDetails = id => async dispatch => {
         dispatch(setError({message: ex.message}))
     }
 };
+
+export const changeViewAction = (view) => {
+    return {
+        type: types.RECIPE_VIEW,
+        payload: view
+    }
+};
+
+export function setSearchByIngredientAction (recipes) {
+    return {type: types.SEARCH_BY_INGREDIENT, payload: recipes}
+}
+
+export const searchByIngredientAction = ingredient => async dispatch => {
+    try {
+        const url = `${baseUrl}findByIngredients?ingredients=?${ingredient}&apiKey=${apiKey}`;
+        console.log(url);
+        const response = await networkClient.get(url);
+        console.log(response);
+        dispatch(setSearchByIngredientAction(response));
+    } catch(ex) {
+        dispatch(setError({message: ex.message}))
+    }
+};
+
+export const registerUserAction = (user) => {
+    return {
+        type: types.REGISTER_USER,
+        payload: user
+    }
+};
+
+export const loginUserAction = (user) => {
+    return {
+        type: types.LOGIN_USER,
+        payload: user
+    }
+};

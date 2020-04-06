@@ -9,6 +9,7 @@ import {
     Container
 } from 'reactstrap';
 import {NavLink as RRNavLink} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 class Header extends Component {
 
@@ -87,4 +88,11 @@ class Header extends Component {
     }
 }
 
-export default Header;
+const mapStateToProps = (state) => {
+    console.log(state);
+    return {
+
+    }
+}
+
+export default connect(mapStateToProps)(Header);

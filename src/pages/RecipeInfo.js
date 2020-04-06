@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {withRouter} from 'react-router-dom';
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import * as actions from "../redux/actions";
 
@@ -10,14 +10,14 @@ class RecipeInfo extends Component {
         const recipeId = this.props.match.params.id;
         console.log(recipeId);
         this.props.getRecipeDetails(recipeId);
-        // console.log(this.props.recipeDetails);
     }
 
     render() {
         const recipe = this.props.recipeDetails;
-        console.log(recipe);
-        console.log(recipe.cuisines);
-        // recipe.cuisines.map(cuisine => {console.log(cuisine);} );
+        const cuisines = recipe.cuisines ? recipe.cuisines : [];
+        const diets = recipe.diets ? recipe.diets : [];
+        const ingredients = recipe.extendedIngredients ? recipe.extendedIngredients : [];
+        const instructions = recipe.analyzedInstructions ? recipe.analyzedInstructions : [];
         return <div className="container recipe-info-container">
             <div className="row justify-content">
                 <h1 className="col-12 d-flex justify-content-center">{recipe.title}Title</h1>
@@ -28,12 +28,23 @@ class RecipeInfo extends Component {
                     <img src={recipe.image}/>
                 </div>
                 <div className="col-3 offset-5">
-                    <div>By: {recipe.author}</div>
-                    <div>Cuisines:  </div>
-                    <div>Diets: </div>
-                    <div>Health score: {recipe.healthScore}</div>
                     <div>Ready in {recipe.readyInMinutes} minutes</div>
                     <div>Servings: {recipe.servings}</div>
+                    <div>Health score: {recipe.healthScore}</div>
+                    <div>{cuisines.map((cuisine, index) => {
+                        if (index === 0) {
+                            return `Cuisines: ${cuisine}`;
+                        } else {
+                            return `, ${cuisine}`;
+                        }
+                    })}</div>
+                    <div>{diets.map((diet, index) => {
+                        if (index === 0) {
+                            return `Diets: ${diet}`;
+                        } else {
+                            return `, ${diet}`;
+                        }
+                    })}</div>
                 </div>
             </div>
             <hr/>
@@ -43,12 +54,9 @@ class RecipeInfo extends Component {
             <div className="row">
                 <div>
                     <ul>
-                        <li>List item</li>
-                        <li>List item</li>
-                        <li>List item</li>
-                        <li>List item</li>
-                        <li>List item</li>
-                        <li>List item</li>
+                        {ingredients.map((ingredient, index) => {
+                            return <li key={index}>{ingredient.originalString}</li>
+                        })}
                     </ul>
                 </div>
             </div>
@@ -59,16 +67,14 @@ class RecipeInfo extends Component {
             <div className="row">
                 <div>
                     <ul>
-                        <li>List item</li>
-                        <li>List item</li>
-                        <li>List item</li>
-                        <li>List item</li>
-                        <li>List item</li>
-                        <li>List item</li>
+                        {instructions.map((instruction) => {
+                            return instruction.steps.map((step, index) => {
+                                return <li key={index}>{step.step}</li>
+                            })
+                        })}
                     </ul>
                 </div>
             </div>
-            {/*{this.props.recipeDetails.title}*/}
         </div>
     }
 }
@@ -77,6 +83,7 @@ const mapStateToProps = state => {
     console.log(state);
     return {
         recipeDetails: state.recipeDetails,
+        // recipeView: state.recipeView
     }
 };
 
@@ -84,6 +91,7 @@ const mapStateToDispatch = dispatch => {
     return bindActionCreators({
         setRecipeDetails: actions.setRecipeDetails,
         getRecipeDetails: actions.getRecipeDetails,
+        // changeViewAction: actions.changeViewAction,
     }, dispatch)
 };
 

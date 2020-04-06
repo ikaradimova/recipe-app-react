@@ -11,6 +11,7 @@ class RandomRecipes extends Component {
     constructor(props) {
         super(props);
         this.state = {};
+        // this.searchByIngredient = this.searchByIngredient.bind(this);
         // this.getRandomRecipeList = this.getRandomRecipeList.bind(this);
     }
 
@@ -39,19 +40,31 @@ class RandomRecipes extends Component {
 
     getRandomRecipeList = () => {
         console.log(this.props);
-        const recipeList = this.props.randomRecipes.map(recipe => {
+        console.log(this.props.searchByIngredient.length);
+        let recipes = [];
+        if(this.props.searchByIngredient.length > 0){
+            recipes = [...this.props.searchByIngredient];
+        } else {
+            recipes = [...this.props.randomRecipes];
+        }
+        const recipeList = recipes.map(recipe => {
             console.log(recipe);
-            return <SingleRecipeCard key={recipe.id} recipe={recipe}/>
+            if(this.props.recipeView === 'list'){
+                return <SingleRecipeInline key={recipe.id} recipe={recipe}/>
+            } else {
+                return <SingleRecipeCard key={recipe.id} recipe={recipe}/>
+            }
+
         })
         return recipeList;
-        return [];
+        // return [];
 
     }
 
     render() {
         console.log(this.props);
         return <div>
-            <Filter/>
+            <Filter searchByIngredientAction={this.props.searchByIngredientAction} changeViewAction={this.props.changeViewAction}/>
             <div className="container recipe-container">
                 <div className="row recipe-row" /*style="margin-top:30px;"*/>
                     {this.getRandomRecipeList()}
@@ -65,7 +78,9 @@ class RandomRecipes extends Component {
 const mapStateToProps = state => {
     console.log(state);
     return {
-        randomRecipes: state.randomRecipes
+        randomRecipes: state.randomRecipes,
+        recipeView: state.recipeView,
+        searchByIngredient: state.searchByIngredient
         // favoriteRecipes: state.favoriteRecipes
     }
 };
@@ -75,6 +90,8 @@ const mapStateToDispatch = dispatch => {
     return bindActionCreators({
         setRandomRecipes: actions.setRandomRecipes,
         getRandomRecipes: actions.getRandomRecipes,
+        changeViewAction: actions.changeViewAction,
+        searchByIngredientAction: actions.searchByIngredientAction,
         // addFavoriteRecipe: actions.addFavoriteRecipe,
         // removeFavoriteRecipe: actions.removeFavoriteRecipe
     }, dispatch)
