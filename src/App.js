@@ -8,6 +8,8 @@ import Register from './components/auth/Register';
 import Profile from './pages/Profile';
 import Favourite from './pages/Favourite';
 import RecipeInfo from "./pages/RecipeInfo";
+import FoodTrivia from "./pages/FoodTrivia";
+import FoodJoke from "./pages/FoodJoke";
 import {
     Route,
     BrowserRouter as Router,
@@ -74,7 +76,21 @@ const routes = [
         main: () => <Layout>
             <RecipeInfo />
         </Layout>
-    }
+    },
+    {
+        path: '/random/trivia',
+        exact: true,
+        main: () => <Layout>
+            <FoodTrivia/>
+        </Layout>
+    },
+    {
+        path: '/random/joke',
+        exact: true,
+        main: () => <Layout>
+            <FoodJoke/>
+        </Layout>
+    },
 ];
 
 const getRoutes = () => {

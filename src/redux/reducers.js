@@ -57,6 +57,28 @@ function searchByIngredient(state = [], action) {
     }
 }
 
+function randomFoodTrivia(state = '', action) {
+    switch (action.type) {
+        case types.SET_RANDOM_FOOD_TRIVIA: {
+            // console.log(action.payload);
+            return action.payload;
+        }
+        default:
+            return state;
+    }
+}
+
+function randomFoodJoke(state = '', action) {
+    switch (action.type) {
+        case types.SET_RANDOM_FOOD_JOKE: {
+            // console.log(action.payload);
+            return action.payload;
+        }
+        default:
+            return state;
+    }
+}
+
 function register(state = {}, action) {
     switch(action.type) {
         case types.REGISTER_USER_SUCCESS:
@@ -99,6 +121,8 @@ export default combineReducers({
     recipeDetails,
     recipeView,
     searchByIngredient,
+    randomFoodTrivia,
+    randomFoodJoke,
     register,
     login
 });

@@ -81,6 +81,24 @@ class Header extends Component {
                                 Favourite recipes
                             </NavLink>
                         </NavItem>
+                        <NavItem>
+                            <NavLink
+                                tag={RRNavLink}
+                                exact
+                                to="/random/trivia"
+                                activeClassName="active">
+                                Random Food Trivia
+                            </NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink
+                                tag={RRNavLink}
+                                exact
+                                to="/random/joke"
+                                activeClassName="active">
+                                Random Food Joke
+                            </NavLink>
+                        </NavItem>
                     </Nav>
                 </Collapse>
             </Container>

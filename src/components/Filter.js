@@ -30,16 +30,18 @@ class Filter extends Component {
                                 id="search"
                                 name="search"
                                 className="form-control"
-                                placeholder="Search by ingredient"
+                                placeholder="Search by ingredients (separate them with a comma)"
                                 onChange={this.handleChange}
                             />
                         </div>
                     </form>
                 </div>
-                <div className="col filter-icon list-view" onClick={() => this.onClick('list')}>
+                <div className={`col filter-icon list-view ${this.props.recipeView === 'list' ? 'active' : ''}`}
+                     onClick={() => this.onClick('list')}>
                     <i className="fa fa-list"></i>
                 </div>
-                <div className="col filter-icon grid-view" onClick={() => this.onClick('grid')}>
+                <div className={`col filter-icon grid-view ${this.props.recipeView === 'grid' ? 'active' : ''}`}
+                     onClick={() => this.onClick('grid')}>
                     <i className="fa fa-th-large"></i>
                 </div>
             </div>

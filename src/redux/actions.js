@@ -16,7 +16,7 @@ export function setError (error) {
 export const getRandomRecipes = () => async dispatch => {
     try {
         const numberOfRecipes = 1; //should be initially set to 20
-        const url = `${baseUrl}random?number=${numberOfRecipes}&apiKey=${apiKey}`;
+        const url = `${baseUrl}recipes/random?number=${numberOfRecipes}&apiKey=${apiKey}`;
         const response = await networkClient.get(url);
         console.log(response);
         dispatch(setRandomRecipes(response.recipes));
@@ -31,7 +31,7 @@ export function setRecipeDetails (recipe) {
 
 export const getRecipeDetails = id => async dispatch => {
     try {
-        const url = `${baseUrl}${id}/information?apiKey=${apiKey}`;
+        const url = `${baseUrl}recipes/${id}/information?apiKey=${apiKey}`;
         const response = await networkClient.get(url);
         console.log(response);
         dispatch(setRecipeDetails(response));
@@ -51,13 +51,49 @@ export function setSearchByIngredientAction (recipes) {
     return {type: types.SEARCH_BY_INGREDIENT, payload: recipes}
 }
 
-export const searchByIngredientAction = ingredient => async dispatch => {
+export const searchByIngredientAction = ingredients => async dispatch => {
     try {
-        const url = `${baseUrl}findByIngredients?ingredients=?${ingredient}&apiKey=${apiKey}`;
+        ingredients = ingredients.replace(',', '').replace(' ', ',');
+        console.log(ingredients);
+        const url = `${baseUrl}recipes/findByIngredients?ingredients=?${ingredients}&apiKey=${apiKey}`;
         console.log(url);
         const response = await networkClient.get(url);
         console.log(response);
         dispatch(setSearchByIngredientAction(response));
+    } catch(ex) {
+        dispatch(setError({message: ex.message}))
+    }
+};
+
+export function setRandomFoodTrivia (trivia) {
+    console.log(trivia);
+    return {type: types.SET_RANDOM_FOOD_TRIVIA, payload: trivia}
+}
+
+export const getRandomFoodTrivia = () => async dispatch => {
+    try {
+        const url = `${baseUrl}food/trivia/random?apiKey=${apiKey}`;
+        console.log(url);
+        const response = await networkClient.get(url);
+        console.log(response);
+        dispatch(setRandomFoodTrivia(response));
+    } catch(ex) {
+        dispatch(setError({message: ex.message}))
+    }
+};
+
+export function setRandomFoodJoke (joke) {
+    console.log(joke);
+    return {type: types.SET_RANDOM_FOOD_JOKE, payload: joke}
+}
+
+export const getRandomFoodJoke = () => async dispatch => {
+    try {
+        const url = `${baseUrl}/food/jokes/random?apiKey=${apiKey}`;
+        console.log(url);
+        const response = await networkClient.get(url);
+        console.log(response);
+        dispatch(setRandomFoodJoke(response));
     } catch(ex) {
         dispatch(setError({message: ex.message}))
     }

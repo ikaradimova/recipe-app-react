@@ -64,7 +64,11 @@ class RandomRecipes extends Component {
     render() {
         console.log(this.props);
         return <div>
-            <Filter searchByIngredientAction={this.props.searchByIngredientAction} changeViewAction={this.props.changeViewAction}/>
+            <Filter
+                searchByIngredientAction={this.props.searchByIngredientAction}
+                changeViewAction={this.props.changeViewAction}
+                recipeView={this.props.recipeView}
+            />
             <div className="container recipe-container">
                 <div className="row recipe-row" /*style="margin-top:30px;"*/>
                     {this.getRandomRecipeList()}
