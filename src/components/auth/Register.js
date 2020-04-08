@@ -1,23 +1,51 @@
 import React, {Component} from "react";
+import {bindActionCreators} from "redux";
+import * as actions from "../../redux/actions";
+import {connect} from "react-redux";
+import {registration} from "../../redux/reducers";
 
 class Register extends Component{
 
-    state = {
-        email: '',
-        password: '',
-        firstname: '',
-        lastname: ''
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            user: {
+                firstname: '',
+                lastname: '',
+                email: '',
+                password: ''
+            },
+            submitted: false
+        };
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange = (e) => {
+    handleChange(event) {
+        const { name, value } = event.target;
+        const { user } = this.state;
         this.setState({
-            [e.target.id]: e.target.value
-        })
+            user: {
+                ...user,
+                [name]: value
+            }
+        });
+        console.log(this.state.user);
     }
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(this.state);
+    handleSubmit(event) {
+        event.preventDefault();
+        console.log('submit');
+
+        this.setState({ submitted: true });
+        const { user } = this.state;
+        console.log(user);
+        if (user.firstname && user.lastname && user.email && user.password) {
+            console.log('register');
+            this.props.register(user);
+        }
     }
 
     render() {
@@ -31,6 +59,7 @@ class Register extends Component{
                         <input
                             type="email"
                             id="email"
+                            name="email"
                             className="form-control"
                             placeholder="email"
                             onChange={this.handleChange}
@@ -40,6 +69,7 @@ class Register extends Component{
                         <input
                             type="password"
                             id="password"
+                            name="password"
                             className="form-control"
                             placeholder="password"
                             onChange={this.handleChange}
@@ -49,6 +79,7 @@ class Register extends Component{
                         <input
                             type="text"
                             id="firstname"
+                            name="firstname"
                             className="form-control"
                             placeholder="firstname"
                             onChange={this.handleChange}
@@ -58,13 +89,14 @@ class Register extends Component{
                         <input
                             type="text"
                             id="lastname"
+                            name="lastname"
                             className="form-control"
                             placeholder="lastname"
                             onChange={this.handleChange}
                         />
                     </div>
                     <div className="form-group">
-                        <button className="btn btn-outline-primary">Register</button>
+                        <button className="btn btn-outline-primary" onClick={this.handleSubmit}>Register</button>
                     </div>
                 </form>
             </div>
@@ -72,4 +104,27 @@ class Register extends Component{
     }
 }
 
-export default Register;
+
+const mapStateToProps = state => {
+    console.log(state);
+    return {
+        // login: state.login,
+        registration: state.registration,
+        // searchByIngredient: state.searchByIngredient
+        // favoriteRecipes: state.favoriteRecipes
+    }
+};
+
+
+const mapStateToDispatch = dispatch => {
+    return bindActionCreators({
+        // login: actions.login,
+        // logout: actions.logout,
+        register: actions.register,
+        // searchByIngredientAction: actions.searchByIngredientAction,
+        // addFavoriteRecipe: actions.addFavoriteRecipe,
+        // removeFavoriteRecipe: actions.removeFavoriteRecipe
+    }, dispatch)
+};
+
+export default connect(mapStateToProps, mapStateToDispatch)(Register);

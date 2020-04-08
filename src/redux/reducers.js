@@ -79,25 +79,62 @@ function randomFoodJoke(state = '', action) {
     }
 }
 
-function register(state = {}, action) {
-    switch(action.type) {
-        case types.REGISTER_USER_SUCCESS:
-            return {...action.payload};
-        case types.REGISTER_USER_ERROR:
-            return {...action.payload};
+// function register(state = {}, action) {
+//     switch(action.type) {
+//         case types.REGISTER_USER_SUCCESS:
+//             return {...action.payload};
+//         case types.REGISTER_USER_ERROR:
+//             return {...action.payload};
+//         default:
+//             return state;
+//     }
+// }
+
+// function login(state = {}, action) {
+//     switch(action.type) {
+//         case types.LOGIN_USER_SUCCESS:
+//             return {...action.payload};
+//         case types.LOGIN_USER_ERROR:
+//             return {...action.payload};
+//         default:
+//             return state;
+//     }
+// }
+
+let user = JSON.parse(localStorage.getItem('user'));
+const initialState = user ? { loggedIn: true, user } : {};
+
+export function authentication(state = initialState, action) {
+    switch (action.type) {
+        case types.LOGIN_REQUEST:
+            return {
+                loggingIn: true,
+                user: action.user
+            };
+        case types.LOGIN_SUCCESS:
+            return {
+                loggedIn: true,
+                user: action.user
+            };
+        case types.LOGIN_FAILURE:
+            return {};
+        case types.LOGOUT:
+            return {};
         default:
-            return state;
+            return state
     }
 }
 
-function login(state = {}, action) {
-    switch(action.type) {
-        case types.LOGIN_USER_SUCCESS:
-            return {...action.payload};
-        case types.LOGIN_USER_ERROR:
-            return {...action.payload};
+export function registration(state = {}, action) {
+    switch (action.type) {
+        case types.REGISTER_REQUEST:
+            return { registering: true };
+        case types.REGISTER_SUCCESS:
+            return {};
+        case types.REGISTER_FAILURE:
+            return {};
         default:
-            return state;
+            return state
     }
 }
 
@@ -123,6 +160,8 @@ export default combineReducers({
     searchByIngredient,
     randomFoodTrivia,
     randomFoodJoke,
-    register,
-    login
+    authentication,
+    registration
+    // register,
+    // login
 });

@@ -1,6 +1,9 @@
 import types from './action-types';
 import networkClient from '../network/network-client';
 import constants from "../constants";
+// import history from "../helpers/history";
+import { createBrowserHistory } from 'history';
+import {userService} from "../services/userService";
 
 const apiKey = constants.apiKey;
 const baseUrl = constants.baseURL;
@@ -99,16 +102,68 @@ export const getRandomFoodJoke = () => async dispatch => {
     }
 };
 
-export const registerUserAction = (user) => {
-    return {
-        type: types.REGISTER_USER,
-        payload: user
-    }
-};
+// export const registerUserAction = (user) => {
+//     return {
+//         type: types.REGISTER_USER,
+//         payload: user
+//     }
+// };
+//
+// export const loginUserAction = (user) => {
+//     return {
+//         type: types.LOGIN_USER,
+//         payload: user
+//     }
+// };
 
-export const loginUserAction = (user) => {
-    return {
-        type: types.LOGIN_USER,
-        payload: user
-    }
-};
+export function login(email, password) {
+    return dispatch => {
+        // dispatch(request({ email }));
+
+        userService.login(email, password)
+            .then(
+                user => {
+                    // dispatch(success(user));
+                    createBrowserHistory().push('/');
+                    return { type: types.LOGIN_SUCCESS, user }
+                },
+                error => {
+                    dispatch(setError({message: error.message}))
+                    // dispatch(failure(error.toString()));
+                    // dispatch(alertActions.error(error.toString()));
+                }
+            );
+    };
+
+    // function request(user) { return { type: types.LOGIN_REQUEST, user } }
+    // function success(user) { return { type: types.LOGIN_SUCCESS, user } }
+}
+
+export function logout() {
+    userService.logout();
+    return { type: types.LOGOUT };
+}
+
+export function register(user) {
+    return dispatch => {
+        // dispatch(request(user));
+
+        userService.register(user)
+            .then(
+                user => {
+                    // dispatch(success());
+                    createBrowserHistory().push('/login');
+                    return { type: types.REGISTER_SUCCESS, user }
+                },
+                error => {
+                    dispatch(setError({message: error.message}))
+                    // dispatch(failure(error.toString()));
+                    // dispatch(alertActions.error(error.toString()));
+                }
+            );
+    };
+
+    // function request(user) { return { type: types.REGISTER_REQUEST, user } }
+    // function success(user) { return { type: types.REGISTER_SUCCESS, user } }
+    // function failure(error) { return { type: types.REGISTER_FAILURE, error } }
+}

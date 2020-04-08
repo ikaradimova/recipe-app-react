@@ -1,21 +1,39 @@
 import React, {Component} from "react";
+import {bindActionCreators} from "redux";
+import * as actions from "../../redux/actions";
+import {connect} from "react-redux";
 
 class Login extends Component{
 
-    state = {
-        email: '',
-        password: ''
+    constructor(props) {
+        super(props);
+
+        // reset login status
+        this.props.logout();
+
+        this.state = {
+            email: '',
+            password: '',
+            submitted: false
+        };
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange = (e) => {
-        this.setState({
-            [e.target.id]: e.target.value
-        })
+    handleChange(e) {
+        const { name, value } = e.target;
+        this.setState({ [name]: value });
     }
 
-    handleSubmit = (e) => {
+    handleSubmit(e) {
         e.preventDefault();
-        console.log(this.state);
+
+        this.setState({ submitted: true });
+        const { email, password } = this.state;
+        if (email && password) {
+            this.props.login(email, password);
+        }
     }
 
     render() {
@@ -29,6 +47,7 @@ class Login extends Component{
                         <input
                             type="email"
                             id="email"
+                            name="email"
                             className="form-control"
                             placeholder="email"
                             onChange={this.handleChange}
@@ -38,6 +57,7 @@ class Login extends Component{
                         <input
                             type="password"
                             id="password"
+                            name="password"
                             className="form-control"
                             placeholder="password"
                             onChange={this.handleChange}
@@ -52,4 +72,27 @@ class Login extends Component{
     }
 }
 
-export default Login;
+const mapStateToProps = state => {
+    console.log(state);
+    return {
+        authentication: state.authentication,
+        // registration: state.registration,
+        // searchByIngredient: state.searchByIngredient
+        // favoriteRecipes: state.favoriteRecipes
+    }
+};
+
+
+const mapStateToDispatch = dispatch => {
+    return bindActionCreators({
+        login: actions.login,
+        logout: actions.logout,
+        // register: actions.register,
+        // searchByIngredientAction: actions.searchByIngredientAction,
+        // addFavoriteRecipe: actions.addFavoriteRecipe,
+        // removeFavoriteRecipe: actions.removeFavoriteRecipe
+    }, dispatch)
+};
+
+export default connect(mapStateToProps, mapStateToDispatch)(Login);
+// export default Login;
