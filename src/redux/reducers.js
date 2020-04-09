@@ -130,9 +130,10 @@ export function registration(state = {}, action) {
         case types.REGISTER_REQUEST:
             return { registering: true };
         case types.REGISTER_SUCCESS:
-            return {};
+            console.log('register success');
+            return { registering: 'success' };
         case types.REGISTER_FAILURE:
-            return {};
+            return { register: 'failure' };
         default:
             return state
     }

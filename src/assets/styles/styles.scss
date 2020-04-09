@@ -84,3 +84,13 @@ body{
   margin: 0 20%;
   padding: 1.5%;
 }
+
+.error{
+  display: none;
+}
+
+.error.active{
+  display: block;
+  text-align: center;
+  color: red;
+}

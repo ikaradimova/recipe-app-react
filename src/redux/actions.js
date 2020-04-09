@@ -1,19 +1,19 @@
 import types from './action-types';
 import networkClient from '../network/network-client';
 import constants from "../constants";
-// import history from "../helpers/history";
-import { createBrowserHistory } from 'history';
+import {history} from "../helpers/history";
 import {userService} from "../services/userService";
 
 const apiKey = constants.apiKey;
 const baseUrl = constants.baseURL;
 
-export function setRandomRecipes (recipes) {
+export function setRandomRecipes(recipes) {
     console.log(recipes);
     return {type: types.SET_RANDOM_RECIPES, payload: recipes}
 }
-export function setError (error) {
-    return { type: types.SET_ERROR, payload: error };
+
+export function setError(error) {
+    return {type: types.SET_ERROR, payload: error};
 }
 
 export const getRandomRecipes = () => async dispatch => {
@@ -23,12 +23,12 @@ export const getRandomRecipes = () => async dispatch => {
         const response = await networkClient.get(url);
         console.log(response);
         dispatch(setRandomRecipes(response.recipes));
-    } catch(ex) {
+    } catch (ex) {
         dispatch(setError({message: ex.message}))
     }
 };
 
-export function setRecipeDetails (recipe) {
+export function setRecipeDetails(recipe) {
     return {type: types.SET_RECIPE_DETAILS, payload: recipe}
 }
 
@@ -38,7 +38,7 @@ export const getRecipeDetails = id => async dispatch => {
         const response = await networkClient.get(url);
         console.log(response);
         dispatch(setRecipeDetails(response));
-    } catch(ex) {
+    } catch (ex) {
         dispatch(setError({message: ex.message}))
     }
 };
@@ -50,7 +50,7 @@ export const changeViewAction = (view) => {
     }
 };
 
-export function setSearchByIngredientAction (recipes) {
+export function setSearchByIngredientAction(recipes) {
     return {type: types.SEARCH_BY_INGREDIENT, payload: recipes}
 }
 
@@ -63,12 +63,12 @@ export const searchByIngredientAction = ingredients => async dispatch => {
         const response = await networkClient.get(url);
         console.log(response);
         dispatch(setSearchByIngredientAction(response));
-    } catch(ex) {
+    } catch (ex) {
         dispatch(setError({message: ex.message}))
     }
 };
 
-export function setRandomFoodTrivia (trivia) {
+export function setRandomFoodTrivia(trivia) {
     console.log(trivia);
     return {type: types.SET_RANDOM_FOOD_TRIVIA, payload: trivia}
 }
@@ -80,12 +80,12 @@ export const getRandomFoodTrivia = () => async dispatch => {
         const response = await networkClient.get(url);
         console.log(response);
         dispatch(setRandomFoodTrivia(response));
-    } catch(ex) {
+    } catch (ex) {
         dispatch(setError({message: ex.message}))
     }
 };
 
-export function setRandomFoodJoke (joke) {
+export function setRandomFoodJoke(joke) {
     console.log(joke);
     return {type: types.SET_RANDOM_FOOD_JOKE, payload: joke}
 }
@@ -97,7 +97,7 @@ export const getRandomFoodJoke = () => async dispatch => {
         const response = await networkClient.get(url);
         console.log(response);
         dispatch(setRandomFoodJoke(response));
-    } catch(ex) {
+    } catch (ex) {
         dispatch(setError({message: ex.message}))
     }
 };
@@ -116,6 +116,10 @@ export const getRandomFoodJoke = () => async dispatch => {
 //     }
 // };
 
+function successLogin(user) {
+    return {type: types.LOGIN_SUCCESS, user}
+}
+
 export function login(email, password) {
     return dispatch => {
         // dispatch(request({ email }));
@@ -123,12 +127,12 @@ export function login(email, password) {
         userService.login(email, password)
             .then(
                 user => {
-                    // dispatch(success(user));
-                    createBrowserHistory().push('/');
-                    return { type: types.LOGIN_SUCCESS, user }
+                    dispatch(successLogin(user));
+                    // history.push('/');
+                    // return { type: types.LOGIN_SUCCESS, user }
                 },
                 error => {
-                    dispatch(setError({message: error.message}))
+                    dispatch(setError({message: error.toString()}))
                     // dispatch(failure(error.toString()));
                     // dispatch(alertActions.error(error.toString()));
                 }
@@ -136,12 +140,16 @@ export function login(email, password) {
     };
 
     // function request(user) { return { type: types.LOGIN_REQUEST, user } }
-    // function success(user) { return { type: types.LOGIN_SUCCESS, user } }
+
 }
 
 export function logout() {
     userService.logout();
-    return { type: types.LOGOUT };
+    return {type: types.LOGOUT};
+}
+
+function successRegister(user) {
+    return {type: types.REGISTER_SUCCESS, user}
 }
 
 export function register(user) {
@@ -151,12 +159,12 @@ export function register(user) {
         userService.register(user)
             .then(
                 user => {
-                    // dispatch(success());
-                    createBrowserHistory().push('/login');
-                    return { type: types.REGISTER_SUCCESS, user }
+                    dispatch(successRegister(user));
+                    // history.push('/login');
+                    // return { type: types.REGISTER_SUCCESS, user }
                 },
                 error => {
-                    dispatch(setError({message: error.message}))
+                    dispatch(setError({message: error.toString()}))
                     // dispatch(failure(error.toString()));
                     // dispatch(alertActions.error(error.toString()));
                 }
@@ -164,6 +172,6 @@ export function register(user) {
     };
 
     // function request(user) { return { type: types.REGISTER_REQUEST, user } }
-    // function success(user) { return { type: types.REGISTER_SUCCESS, user } }
+
     // function failure(error) { return { type: types.REGISTER_FAILURE, error } }
 }

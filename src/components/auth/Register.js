@@ -2,7 +2,8 @@ import React, {Component} from "react";
 import {bindActionCreators} from "redux";
 import * as actions from "../../redux/actions";
 import {connect} from "react-redux";
-import {registration} from "../../redux/reducers";
+import {withRouter} from 'react-router';
+import { history } from '../../helpers/history';
 
 class Register extends Component{
 
@@ -32,7 +33,6 @@ class Register extends Component{
                 [name]: value
             }
         });
-        console.log(this.state.user);
     }
 
     handleSubmit(event) {
@@ -48,12 +48,23 @@ class Register extends Component{
         }
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log(this.props.registration);
+        if(this.props.registration.registering === 'success'){
+            // createBrowserHistory().push('/login');
+            this.props.history.push('/login');
+        }
+    }
+
     render() {
         return (
             <div className="container">
                 <div className="row justify-content">
                     <h1 className="col-12 d-flex justify-content-center">Register</h1>
                 </div>
+                <p className={`error ${this.props.error !== undefined ? 'active': ''}`}>
+                    {this.props.error !== undefined ? this.props.error.message : ''}
+                </p>
                 <form onSubmit={this.handleSubmit} className="register-form">
                     <div className="form-group">
                         <input
@@ -110,6 +121,8 @@ const mapStateToProps = state => {
     return {
         // login: state.login,
         registration: state.registration,
+        // registering: state.registering,
+        error: state.error,
         // searchByIngredient: state.searchByIngredient
         // favoriteRecipes: state.favoriteRecipes
     }
@@ -127,4 +140,5 @@ const mapStateToDispatch = dispatch => {
     }, dispatch)
 };
 
-export default connect(mapStateToProps, mapStateToDispatch)(Register);
+// export default withRouter(Users)
+export default withRouter(connect(mapStateToProps, mapStateToDispatch)(Register));

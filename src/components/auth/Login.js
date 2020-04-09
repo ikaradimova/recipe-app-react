@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {bindActionCreators} from "redux";
 import * as actions from "../../redux/actions";
 import {connect} from "react-redux";
+import {withRouter} from "react-router";
 
 class Login extends Component{
 
@@ -33,6 +34,14 @@ class Login extends Component{
         const { email, password } = this.state;
         if (email && password) {
             this.props.login(email, password);
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log(this.props.authentication);
+        if(this.props.authentication.loggedIn === true){
+            // createBrowserHistory().push('/login');
+            this.props.history.push('/');
         }
     }
 
@@ -94,5 +103,5 @@ const mapStateToDispatch = dispatch => {
     }, dispatch)
 };
 
-export default connect(mapStateToProps, mapStateToDispatch)(Login);
+export default withRouter(connect(mapStateToProps, mapStateToDispatch)(Login));
 // export default Login;

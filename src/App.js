@@ -10,13 +10,14 @@ import Favourite from './pages/Favourite';
 import RecipeInfo from "./pages/RecipeInfo";
 import FoodTrivia from "./pages/FoodTrivia";
 import FoodJoke from "./pages/FoodJoke";
+import {history} from "./helpers/history";
 import {
     Route,
     BrowserRouter as Router,
-    Switch
+    Switch, withRouter
 } from "react-router-dom";
-import { Provider } from "react-redux";
-import { createStore, applyMiddleware } from "redux";
+import {connect, Provider} from "react-redux";
+import {createStore, applyMiddleware, bindActionCreators} from "redux";
 import reducers from "./redux/reducers";
 import thunk from 'redux-thunk';
 
@@ -24,6 +25,7 @@ import {getFirestore} from 'redux-firestore';
 import {getFirebase} from "react-redux-firebase";
 
 import { usersFetch } from './helpers/usersFetch';
+import * as actions from "./redux/actions";
 usersFetch();
 
 const store = createStore(reducers, applyMiddleware(thunk.withExtraArgument({getFirebase, getFirestore})));
@@ -109,8 +111,9 @@ const getRoutes = () => {
 };
 
 function App() {
+    // console.log(this.props.authentication);
     return <Provider store={store}>
-        <Router>
+        <Router history={history}>
             <Switch>
                 {getRoutes()}
             </Switch>
@@ -118,4 +121,27 @@ function App() {
     </Provider>
 }
 
+// const mapStateToProps = state => {
+//     console.log(state);
+//     return {
+//         authentication: state.authentication,
+//         // registration: state.registration,
+//         // searchByIngredient: state.searchByIngredient
+//         // favoriteRecipes: state.favoriteRecipes
+//     }
+// };
+//
+//
+// const mapStateToDispatch = dispatch => {
+//     return bindActionCreators({
+//         login: actions.login,
+//         logout: actions.logout,
+//         // register: actions.register,
+//         // searchByIngredientAction: actions.searchByIngredientAction,
+//         // addFavoriteRecipe: actions.addFavoriteRecipe,
+//         // removeFavoriteRecipe: actions.removeFavoriteRecipe
+//     }, dispatch)
+// };
+
+// export default connect(mapStateToProps, mapStateToDispatch)(App);
 export default App;

@@ -8,8 +8,10 @@ import {
     NavLink,
     Container
 } from 'reactstrap';
-import {NavLink as RRNavLink} from 'react-router-dom';
+import {Link, NavLink as RRNavLink} from 'react-router-dom';
 import {connect} from 'react-redux';
+import {bindActionCreators} from "redux";
+import * as actions from "../../redux/actions";
 
 class Header extends Component {
 
@@ -27,6 +29,8 @@ class Header extends Component {
     };
 
     render() {
+        console.log(this.props.authentication.loggedIn);
+        console.log(this.props.authentication.loggedIn === undefined);
         return <Navbar color="primary" dark expand="md">
             <Container>
                 <NavLink
@@ -47,40 +51,35 @@ class Header extends Component {
                                 Home
                             </NavLink>
                         </NavItem>
-                        <NavItem>
-                            <NavLink
-                                tag={RRNavLink}
-                                exact to="/login"
-                                activeClassName="active">
-                                Login
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink
-                                tag={RRNavLink}
-                                exact to="/register"
-                                activeClassName="active">
-                                Register
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink
-                                tag={RRNavLink}
-                                exact
-                                to="/profile"
-                                activeClassName="active">
-                                Profile
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink
-                                tag={RRNavLink}
-                                exact
-                                to="/favourite"
-                                activeClassName="active">
-                                Favourite recipes
-                            </NavLink>
-                        </NavItem>
+                        {(this.props.authentication.loggedIn === undefined) ?
+                            <NavItem>
+                                <NavLink
+                                    tag={RRNavLink}
+                                    exact to="/login"
+                                    activeClassName="active">
+                                    Login
+                                </NavLink>
+                            </NavItem> : ''
+                        }
+                        {(this.props.authentication.loggedIn === undefined) ?
+                            <NavItem>
+                                <NavLink
+                                    tag={RRNavLink}
+                                    exact to="/register"
+                                    activeClassName="active">
+                                    Register
+                                </NavLink>
+                            </NavItem> : ''
+                        }
+                        {/*<NavItem>*/}
+                        {/*    <NavLink*/}
+                        {/*        tag={RRNavLink}*/}
+                        {/*        exact*/}
+                        {/*        to="/favourite"*/}
+                        {/*        activeClassName="active">*/}
+                        {/*        Favourite recipes*/}
+                        {/*    </NavLink>*/}
+                        {/*</NavItem>*/}
                         <NavItem>
                             <NavLink
                                 tag={RRNavLink}
@@ -99,6 +98,19 @@ class Header extends Component {
                                 Random Food Joke
                             </NavLink>
                         </NavItem>
+                        {(this.props.authentication.loggedIn) ?
+                            <NavItem>
+                                {/*<NavLink*/}
+                                {/*    tag={RRNavLink}*/}
+                                {/*    exact*/}
+                                {/*    to="/logout"*/}
+                                {/*    activeClassName="active">*/}
+                                {/*    Logout*/}
+                                {/*</NavLink>*/}
+                            <Link to="/login" className="nav-link">Logout</Link>
+                            </NavItem>
+                            : ''
+                        }
                     </Nav>
                 </Collapse>
             </Container>
@@ -106,11 +118,33 @@ class Header extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
+// const mapStateToProps = (state) => {
+//     console.log(state);
+//     return {
+//
+//     }
+// }
+
+const mapStateToProps = state => {
     console.log(state);
     return {
-
+        authentication: state.authentication,
+        // registration: state.registration,
+        // searchByIngredient: state.searchByIngredient
+        // favoriteRecipes: state.favoriteRecipes
     }
-}
+};
 
-export default connect(mapStateToProps)(Header);
+
+const mapStateToDispatch = dispatch => {
+    return bindActionCreators({
+        login: actions.login,
+        logout: actions.logout,
+        // register: actions.register,
+        // searchByIngredientAction: actions.searchByIngredientAction,
+        // addFavoriteRecipe: actions.addFavoriteRecipe,
+        // removeFavoriteRecipe: actions.removeFavoriteRecipe
+    }, dispatch)
+};
+
+export default connect(mapStateToProps, mapStateToDispatch)(Header);
