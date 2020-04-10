@@ -10,7 +10,6 @@ class Filter extends Component {
     handleSearchSubmit(event){
         event.preventDefault();
         const searchValue = event.target.elements.search.value;
-        console.log(searchValue);
         this.props.searchByIngredientAction(searchValue);
         event.target.elements.search.value = '';
     }

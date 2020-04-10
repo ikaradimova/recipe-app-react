@@ -20,7 +20,6 @@ class FoodTrivia extends Component {
     }
 
     render() {
-        console.log(this.props);
         return <div className="container">
             <div className="row justify-content">
                 <h1 className="col-12 d-flex justify-content-center">{this.props.randomFoodTrivia.text}</h1>
@@ -36,12 +35,8 @@ class FoodTrivia extends Component {
 }
 
 const mapStateToProps = state => {
-    console.log(state);
     return {
-        randomFoodTrivia: state.randomFoodTrivia,
-        // recipeView: state.recipeView,
-        // searchByIngredient: state.searchByIngredient
-        // favoriteRecipes: state.favoriteRecipes
+        randomFoodTrivia: state.randomFoodTrivia
     }
 };
 
@@ -49,11 +44,7 @@ const mapStateToProps = state => {
 const mapStateToDispatch = dispatch => {
     return bindActionCreators({
         setRandomFoodTrivia: actions.setRandomFoodTrivia,
-        getRandomFoodTrivia: actions.getRandomFoodTrivia,
-        // changeViewAction: actions.changeViewAction,
-        // searchByIngredientAction: actions.searchByIngredientAction,
-        // addFavoriteRecipe: actions.addFavoriteRecipe,
-        // removeFavoriteRecipe: actions.removeFavoriteRecipe
+        getRandomFoodTrivia: actions.getRandomFoodTrivia
     }, dispatch)
 };
 

@@ -8,7 +8,6 @@ class RecipeInfo extends Component {
 
     componentDidMount = () => {
         const recipeId = this.props.match.params.id;
-        console.log(recipeId);
         this.props.getRecipeDetails(recipeId);
     }
 
@@ -25,7 +24,7 @@ class RecipeInfo extends Component {
             <hr/>
             <div className="row">
                 <div className="col-3">
-                    <img src={recipe.image}/>
+                    <img src={recipe.image} alt=""/>
                 </div>
                 <div className="col-3 offset-5">
                     <div>Ready in {recipe.readyInMinutes} minutes</div>
@@ -80,20 +79,16 @@ class RecipeInfo extends Component {
 }
 
 const mapStateToProps = state => {
-    console.log(state);
     return {
-        recipeDetails: state.recipeDetails,
-        // recipeView: state.recipeView
+        recipeDetails: state.recipeDetails
     }
 };
 
 const mapStateToDispatch = dispatch => {
     return bindActionCreators({
         setRecipeDetails: actions.setRecipeDetails,
-        getRecipeDetails: actions.getRecipeDetails,
-        // changeViewAction: actions.changeViewAction,
+        getRecipeDetails: actions.getRecipeDetails
     }, dispatch)
 };
 
 export default connect(mapStateToProps, mapStateToDispatch)(withRouter(RecipeInfo));
-// export default RecipeInfo;

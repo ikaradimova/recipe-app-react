@@ -3,7 +3,6 @@ import {bindActionCreators} from "redux";
 import * as actions from "../../redux/actions";
 import {connect} from "react-redux";
 import {withRouter} from 'react-router';
-import { history } from '../../helpers/history';
 
 class Register extends Component{
 
@@ -25,6 +24,11 @@ class Register extends Component{
     }
 
     handleChange(event) {
+        let errorMessage = document.getElementById('error');
+        if (errorMessage.classList.contains('active')){
+            errorMessage.classList.remove('active');
+            errorMessage.innerHTML = "";
+        }
         const { name, value } = event.target;
         const { user } = this.state;
         this.setState({
@@ -37,21 +41,21 @@ class Register extends Component{
 
     handleSubmit(event) {
         event.preventDefault();
-        console.log('submit');
 
         this.setState({ submitted: true });
         const { user } = this.state;
-        console.log(user);
         if (user.firstname && user.lastname && user.email && user.password) {
-            console.log('register');
             this.props.register(user);
         }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log(this.props.registration);
+        let errorMessage = document.getElementById('error');
+        if (this.props.error.messageRegister !== undefined){
+            errorMessage.classList.add('active');
+            errorMessage.innerHTML = this.props.error.messageRegister;
+        }
         if(this.props.registration.registering === 'success'){
-            // createBrowserHistory().push('/login');
             this.props.history.push('/login');
         }
     }
@@ -62,8 +66,7 @@ class Register extends Component{
                 <div className="row justify-content">
                     <h1 className="col-12 d-flex justify-content-center">Register</h1>
                 </div>
-                <p className={`error ${this.props.error !== undefined ? 'active': ''}`}>
-                    {this.props.error !== undefined ? this.props.error.message : ''}
+                <p id="error">
                 </p>
                 <form onSubmit={this.handleSubmit} className="register-form">
                     <div className="form-group">
@@ -117,28 +120,17 @@ class Register extends Component{
 
 
 const mapStateToProps = state => {
-    console.log(state);
     return {
-        // login: state.login,
         registration: state.registration,
-        // registering: state.registering,
-        error: state.error,
-        // searchByIngredient: state.searchByIngredient
-        // favoriteRecipes: state.favoriteRecipes
+        error: state.error
     }
 };
 
 
 const mapStateToDispatch = dispatch => {
     return bindActionCreators({
-        // login: actions.login,
-        // logout: actions.logout,
-        register: actions.register,
-        // searchByIngredientAction: actions.searchByIngredientAction,
-        // addFavoriteRecipe: actions.addFavoriteRecipe,
-        // removeFavoriteRecipe: actions.removeFavoriteRecipe
+        register: actions.register
     }, dispatch)
 };
 
-// export default withRouter(Users)
 export default withRouter(connect(mapStateToProps, mapStateToDispatch)(Register));

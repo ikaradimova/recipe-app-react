@@ -9,7 +9,6 @@ class Login extends Component{
     constructor(props) {
         super(props);
 
-        // reset login status
         this.props.logout();
 
         this.state = {
@@ -23,6 +22,11 @@ class Login extends Component{
     }
 
     handleChange(e) {
+        let errorMessage = document.getElementById('error');
+        if (errorMessage.classList.contains('active')){
+            errorMessage.classList.remove('active');
+            errorMessage.innerHTML = "";
+        }
         const { name, value } = e.target;
         this.setState({ [name]: value });
     }
@@ -38,9 +42,12 @@ class Login extends Component{
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log(this.props.authentication);
+        let errorMessage = document.getElementById('error');
+        if (this.props.error.messageLogin !== undefined && this.props.authentication.logout !== undefined){
+            errorMessage.classList.add('active');
+            errorMessage.innerHTML = this.props.error.messageLogin;
+        }
         if(this.props.authentication.loggedIn === true){
-            // createBrowserHistory().push('/login');
             this.props.history.push('/');
         }
     }
@@ -51,6 +58,7 @@ class Login extends Component{
                 <div className="row justify-content">
                     <h1 className="col-12 d-flex justify-content-center">Login</h1>
                 </div>
+                <p id="error"></p>
                 <form onSubmit={this.handleSubmit} className="login-form">
                     <div className="form-group">
                         <input
@@ -82,12 +90,9 @@ class Login extends Component{
 }
 
 const mapStateToProps = state => {
-    console.log(state);
     return {
         authentication: state.authentication,
-        // registration: state.registration,
-        // searchByIngredient: state.searchByIngredient
-        // favoriteRecipes: state.favoriteRecipes
+        error: state.error
     }
 };
 
@@ -95,13 +100,8 @@ const mapStateToProps = state => {
 const mapStateToDispatch = dispatch => {
     return bindActionCreators({
         login: actions.login,
-        logout: actions.logout,
-        // register: actions.register,
-        // searchByIngredientAction: actions.searchByIngredientAction,
-        // addFavoriteRecipe: actions.addFavoriteRecipe,
-        // removeFavoriteRecipe: actions.removeFavoriteRecipe
+        logout: actions.logout
     }, dispatch)
 };
 
 export default withRouter(connect(mapStateToProps, mapStateToDispatch)(Login));
-// export default Login;

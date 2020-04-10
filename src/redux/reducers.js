@@ -1,12 +1,9 @@
 import {combineReducers} from "redux";
 import types from './action-types';
-import {firestoreReducer} from "redux-firestore";
-import {firebaseReducer} from "react-redux-firebase";
 
 function randomRecipes(state = [], action) {
     switch (action.type) {
         case types.SET_RANDOM_RECIPES: {
-            // console.log(action.payload);
             return [...action.payload];
         }
         default:
@@ -49,7 +46,6 @@ function recipeView(state = 'list', action) {
 function searchByIngredient(state = [], action) {
     switch (action.type) {
         case types.SEARCH_BY_INGREDIENT: {
-            console.log(action.payload);
             return [...action.payload];
         }
         default:
@@ -60,7 +56,6 @@ function searchByIngredient(state = [], action) {
 function randomFoodTrivia(state = '', action) {
     switch (action.type) {
         case types.SET_RANDOM_FOOD_TRIVIA: {
-            // console.log(action.payload);
             return action.payload;
         }
         default:
@@ -71,7 +66,6 @@ function randomFoodTrivia(state = '', action) {
 function randomFoodJoke(state = '', action) {
     switch (action.type) {
         case types.SET_RANDOM_FOOD_JOKE: {
-            // console.log(action.payload);
             return action.payload;
         }
         default:
@@ -79,47 +73,20 @@ function randomFoodJoke(state = '', action) {
     }
 }
 
-// function register(state = {}, action) {
-//     switch(action.type) {
-//         case types.REGISTER_USER_SUCCESS:
-//             return {...action.payload};
-//         case types.REGISTER_USER_ERROR:
-//             return {...action.payload};
-//         default:
-//             return state;
-//     }
-// }
-
-// function login(state = {}, action) {
-//     switch(action.type) {
-//         case types.LOGIN_USER_SUCCESS:
-//             return {...action.payload};
-//         case types.LOGIN_USER_ERROR:
-//             return {...action.payload};
-//         default:
-//             return state;
-//     }
-// }
-
 let user = JSON.parse(localStorage.getItem('user'));
 const initialState = user ? { loggedIn: true, user } : {};
 
 export function authentication(state = initialState, action) {
     switch (action.type) {
-        case types.LOGIN_REQUEST:
-            return {
-                loggingIn: true,
-                user: action.user
-            };
         case types.LOGIN_SUCCESS:
             return {
                 loggedIn: true,
                 user: action.user
             };
-        case types.LOGIN_FAILURE:
-            return {};
         case types.LOGOUT:
-            return {};
+            return {
+                logout: true
+            };
         default:
             return state
     }
@@ -127,31 +94,12 @@ export function authentication(state = initialState, action) {
 
 export function registration(state = {}, action) {
     switch (action.type) {
-        case types.REGISTER_REQUEST:
-            return { registering: true };
         case types.REGISTER_SUCCESS:
-            console.log('register success');
             return { registering: 'success' };
-        case types.REGISTER_FAILURE:
-            return { register: 'failure' };
         default:
             return state
     }
 }
-
-// function favoriteRecipes(state=[], action){
-//     switch (action.type) {
-//         case types.ADD_FAVORITE_RECIPE: {
-//             return [...state, action.payload];
-//         }
-//         case types.REMOVE_FAVORITE_RECIPE: {
-//             state.splice(action.payload, 1)
-//             return [...state];
-//         }
-//         default:
-//             return state;
-//     }
-// }
 
 export default combineReducers({
     randomRecipes,
@@ -163,6 +111,4 @@ export default combineReducers({
     randomFoodJoke,
     authentication,
     registration
-    // register,
-    // login
 });

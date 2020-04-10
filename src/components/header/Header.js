@@ -29,8 +29,6 @@ class Header extends Component {
     };
 
     render() {
-        console.log(this.props.authentication.loggedIn);
-        console.log(this.props.authentication.loggedIn === undefined);
         return <Navbar color="primary" dark expand="md">
             <Container>
                 <NavLink
@@ -51,26 +49,6 @@ class Header extends Component {
                                 Home
                             </NavLink>
                         </NavItem>
-                        {(this.props.authentication.loggedIn === undefined) ?
-                            <NavItem>
-                                <NavLink
-                                    tag={RRNavLink}
-                                    exact to="/login"
-                                    activeClassName="active">
-                                    Login
-                                </NavLink>
-                            </NavItem> : ''
-                        }
-                        {(this.props.authentication.loggedIn === undefined) ?
-                            <NavItem>
-                                <NavLink
-                                    tag={RRNavLink}
-                                    exact to="/register"
-                                    activeClassName="active">
-                                    Register
-                                </NavLink>
-                            </NavItem> : ''
-                        }
                         {/*<NavItem>*/}
                         {/*    <NavLink*/}
                         {/*        tag={RRNavLink}*/}
@@ -98,15 +76,28 @@ class Header extends Component {
                                 Random Food Joke
                             </NavLink>
                         </NavItem>
+                        {(this.props.authentication.loggedIn === undefined) ?
+                            <NavItem>
+                                <NavLink
+                                    tag={RRNavLink}
+                                    exact to="/login"
+                                    activeClassName="active">
+                                    Login
+                                </NavLink>
+                            </NavItem> : ''
+                        }
+                        {(this.props.authentication.loggedIn === undefined) ?
+                            <NavItem>
+                                <NavLink
+                                    tag={RRNavLink}
+                                    exact to="/register"
+                                    activeClassName="active">
+                                    Register
+                                </NavLink>
+                            </NavItem> : ''
+                        }
                         {(this.props.authentication.loggedIn) ?
                             <NavItem>
-                                {/*<NavLink*/}
-                                {/*    tag={RRNavLink}*/}
-                                {/*    exact*/}
-                                {/*    to="/logout"*/}
-                                {/*    activeClassName="active">*/}
-                                {/*    Logout*/}
-                                {/*</NavLink>*/}
                             <Link to="/login" className="nav-link">Logout</Link>
                             </NavItem>
                             : ''
@@ -118,20 +109,9 @@ class Header extends Component {
     }
 }
 
-// const mapStateToProps = (state) => {
-//     console.log(state);
-//     return {
-//
-//     }
-// }
-
 const mapStateToProps = state => {
-    console.log(state);
     return {
-        authentication: state.authentication,
-        // registration: state.registration,
-        // searchByIngredient: state.searchByIngredient
-        // favoriteRecipes: state.favoriteRecipes
+        authentication: state.authentication
     }
 };
 
@@ -139,11 +119,7 @@ const mapStateToProps = state => {
 const mapStateToDispatch = dispatch => {
     return bindActionCreators({
         login: actions.login,
-        logout: actions.logout,
-        // register: actions.register,
-        // searchByIngredientAction: actions.searchByIngredientAction,
-        // addFavoriteRecipe: actions.addFavoriteRecipe,
-        // removeFavoriteRecipe: actions.removeFavoriteRecipe
+        logout: actions.logout
     }, dispatch)
 };
 

@@ -20,7 +20,6 @@ class FoodJoke extends Component {
     }
 
     render() {
-        console.log(this.props);
         return <div className="container">
             <div className="row justify-content">
                 <h1 className="col-12 d-flex justify-content-center">{this.props.randomFoodJoke.text}</h1>
@@ -36,12 +35,8 @@ class FoodJoke extends Component {
 }
 
 const mapStateToProps = state => {
-    console.log(state);
     return {
-        randomFoodJoke: state.randomFoodJoke,
-        // recipeView: state.recipeView,
-        // searchByIngredient: state.searchByIngredient
-        // favoriteRecipes: state.favoriteRecipes
+        randomFoodJoke: state.randomFoodJoke
     }
 };
 
@@ -49,11 +44,7 @@ const mapStateToProps = state => {
 const mapStateToDispatch = dispatch => {
     return bindActionCreators({
         setRandomFoodJoke: actions.setRandomFoodJoke,
-        getRandomFoodJoke: actions.getRandomFoodJoke,
-        // changeViewAction: actions.changeViewAction,
-        // searchByIngredientAction: actions.searchByIngredientAction,
-        // addFavoriteRecipe: actions.addFavoriteRecipe,
-        // removeFavoriteRecipe: actions.removeFavoriteRecipe
+        getRandomFoodJoke: actions.getRandomFoodJoke
     }, dispatch)
 };
 
